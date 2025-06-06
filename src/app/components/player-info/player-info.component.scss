@@ -1,0 +1,33 @@
+.player-info {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-name {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.player-stats {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.cards-count {
+  font-size: 1.1em;
+}
+
+.player-status {
+  font-style: italic;
+  color: #ffd700;
+}
+
+.opponent {
+  background: rgba(0, 0, 0, 0.3);
+}

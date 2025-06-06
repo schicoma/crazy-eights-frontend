@@ -1,0 +1,11 @@
+<div class="player-hand" [class.opponent]="isOpponent">
+  <div class="cards-container">
+    <app-card
+      *ngFor="let card of cards"
+      [value]="card.value"
+      [suit]="card.suit"
+      [isFaceDown]="isOpponent"
+      [isPlayable]="card.isPlayable"
+    ></app-card>
+  </div>
+</div>

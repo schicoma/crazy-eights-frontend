@@ -1,0 +1,40 @@
+.center-pile {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  min-width: 300px;
+
+  .current-card,
+  .draw-pile {
+    position: relative;
+  }
+
+  .draw-pile::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    pointer-events: none;
+  }
+
+  .clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+
+    &:active {
+      transform: translateY(0);
+    }
+  }
+}

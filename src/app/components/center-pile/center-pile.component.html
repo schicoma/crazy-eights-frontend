@@ -1,0 +1,18 @@
+<div class="center-pile">
+  <div class="current-card">
+    <app-card
+      *ngIf="topCard"
+      [value]="topCard.value"
+      [suit]="topCard.suit"
+      [isFaceDown]="false"
+      [isClickable]="false"
+    ></app-card>
+  </div>
+  <div class="draw-pile">
+    <app-card
+      [isFaceDown]="true"
+      (click)="onDrawPileClick()"
+      class="clickable"
+    ></app-card>
+  </div>
+</div>

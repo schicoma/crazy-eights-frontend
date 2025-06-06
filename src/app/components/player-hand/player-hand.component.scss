@@ -1,0 +1,19 @@
+.player-hand {
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  min-height: 200px;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  min-height: 180px;
+}
+
+.opponent .cards-container {
+  transform: scale(0.8);
+}

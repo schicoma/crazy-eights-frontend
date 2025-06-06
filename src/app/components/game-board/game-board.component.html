@@ -1,0 +1,15 @@
+<div class="game-board">
+  <div class="opponent-section">
+    <app-player-info [isOpponent]="true"></app-player-info>
+    <app-player-hand [isOpponent]="true" [cards]="computerHand"></app-player-hand>
+  </div>
+  
+  <div class="center-section">
+    <app-center-pile [cards]="centerPile" (drawCard)="drawCard()"></app-center-pile>
+  </div>
+  
+  <div class="player-section">
+    <app-player-info [isOpponent]="false"></app-player-info>
+    <app-player-hand [isOpponent]="false" [cards]="playerHand"></app-player-hand>
+  </div>
+</div>

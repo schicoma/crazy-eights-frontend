@@ -1,0 +1,12 @@
+<div class="card" [class.face-down]="isFaceDown" [class.playable]="isPlayable" [class.clickable]="isClickable">
+  <div class="card-inner">
+    <div class="card-front">
+      <div class="card-value">{{value}}</div>
+      <div [class.card-suit-red]="suitColor === 'red'" [class.card-suit-black]="suitColor === 'black'">{{suitIcon}}
+      </div>
+    </div>
+    <div class="card-back">
+      <div class="card-pattern"></div>
+    </div>
+  </div>
+</div>
