@@ -12,7 +12,7 @@ export class GameService {
 
   constructor() {
     // Connect to the server using the configured URL
-    this.socket = io('config.apiUrl');
+    this.socket = io(config.apiUrl);
     console.log('Socket connected with ID:', this.socket.id);
   }
 
