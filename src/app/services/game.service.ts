@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
+import config from '../../config';
 import { GameJoinedMessage, GameUpdateMessage } from '../models/gameState.model';
 
 @Injectable({
@@ -10,9 +11,9 @@ export class GameService {
   private socket: Socket;
 
   constructor() {
-    // Conecta al servidor (ajusta la URL según tu servidor)
-    this.socket = io('http://localhost:3000');
-    console.log(this.socket.id)
+    // Connect to the server using the configured URL
+    this.socket = io('config.apiUrl');
+    console.log('Socket connected with ID:', this.socket.id);
   }
 
   // Método para crear una partida
