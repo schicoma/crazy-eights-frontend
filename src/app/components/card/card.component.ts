@@ -14,6 +14,7 @@ export class CardComponent {
   @Input() isClickable: boolean = true;
   @Input() isFaceDown: boolean = false;
   @Input() isPlayable: boolean = false;
+  @Input() label: string | undefined
 
   get suitIcon(): string {
     switch (this.suit) {

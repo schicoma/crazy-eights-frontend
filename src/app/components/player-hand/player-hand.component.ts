@@ -3,6 +3,8 @@ import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from
 import { Card } from '../../models/card.model';
 import { CardComponent } from '../card/card.component';
 
+const MAX_LIMIT_OPPONENT_CARDS_FOR_MOBILE = 7
+
 @Component({
   selector: 'app-player-hand',
   standalone: true,
@@ -19,6 +21,8 @@ export class PlayerHandComponent implements OnChanges {
   @Output() playCard = new EventEmitter<Card>();
   @Output() pass = new EventEmitter<void>();
 
+  public opponentCardsLabel: string | null = null
+
   ngOnChanges(changes: SimpleChanges): void {
     if (this.isOpponent && changes['opponentCardsCount']) {
       this.updateOpponentCards();
@@ -27,8 +31,17 @@ export class PlayerHandComponent implements OnChanges {
 
   private updateOpponentCards(): void {
     this.cards = [];
-    for (let i = 0; i < this.opponentCardsCount; i++) {
-      this.cards.push({} as Card);
+
+    if (this.opponentCardsCount <= MAX_LIMIT_OPPONENT_CARDS_FOR_MOBILE) {
+      for (let i = 1; i <= this.opponentCardsCount; i++) {
+        this.cards.push({} as Card);
+      }
+      this.opponentCardsLabel = null
+    } else {
+      for (let i = 1; i <= MAX_LIMIT_OPPONENT_CARDS_FOR_MOBILE - 1; i++) {
+        this.cards.push({} as Card);
+      }
+      this.opponentCardsLabel = `+${this.opponentCardsCount - (MAX_LIMIT_OPPONENT_CARDS_FOR_MOBILE - 1)}`
     }
   }
 

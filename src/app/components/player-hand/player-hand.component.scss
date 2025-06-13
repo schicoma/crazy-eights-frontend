@@ -1,17 +1,69 @@
 .player-hand {
-  padding: 20px;
+  padding: 10px;
   background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  min-height: 200px;
+  border-radius: 8px;
+
+  // Base styles for opponent's cards (mobile first)
+  &.opponent {
+    ::ng-deep .card {
+      width: 35px;
+      height: 52px;
+
+      .card-value {
+        font-size: 1.2em;
+      }
+
+      .card-suit-red,
+      .card-suit-black {
+        font-size: 1.6em;
+      }
+    }
+  }
+
+  &:not(.opponent) {
+    ::ng-deep .card {
+      width: 70px;
+      height: 105px;
+    }
+  }
+
+  // Computers and up
+  @media (min-width: 1200px) {
+    padding: 20px;
+    border-radius: 10px;
+    min-height: 200px;
+
+    &.opponent {
+      ::ng-deep .card {
+        width: 120px;
+        height: 180px;
+
+        .card-value {
+          font-size: 1.5em;
+        }
+
+        .card-suit-red,
+        .card-suit-black {
+          font-size: 2em;
+        }
+      }
+    }
+    
+  }
 }
 
 .cards-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 8px;
   justify-content: center;
   align-items: center;
-  min-height: 180px;
+  min-height: 60px;
+
+  @media (min-width: 1200px) {
+    gap: 10px;
+    min-height: 180px;
+  }
 }
 
 .opponent .cards-container {
@@ -21,17 +73,27 @@
 .actions {
   display: flex;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+
+  @media (min-width: 1200px) {
+    margin-bottom: 1.5rem;
+  }
 }
 
 .pass-button {
-  font-size: 1.2rem;
-  padding: .8rem;
+  font-size: 1rem;
+  padding: .6rem;
   border: 2px solid #ddd;
-  border-radius: 8px;
+  border-radius: 6px;
   background: white;
   cursor: pointer;
   transition: all 0.2s ease;
+
+  @media (min-width: 1200px) {
+    font-size: 1.2rem;
+    padding: .8rem;
+    border-radius: 8px;
+  }
 
   &:hover {
     transform: translateY(-2px);

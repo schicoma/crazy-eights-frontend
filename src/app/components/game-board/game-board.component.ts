@@ -42,6 +42,22 @@ export class GameBoardComponent implements OnInit {
   constructor(private deckService: DeckService, private gameService: GameService) { }
 
   ngOnInit(): void {
+
+    if (true) {
+      this.showGameOptions = false
+      this.topCard = { suit: Suit.CLUBS, value: Value.ACE, isPlayable: false }
+      this.opponentCardsCount = 8
+      this.playerHand = [
+        { suit: Suit.DIAMONDS, value: Value.ACE, isPlayable: false },
+        { suit: Suit.SPADES, value: Value.JACK, isPlayable: false },
+        { suit: Suit.CLUBS, value: Value.EIGHT, isPlayable: false },
+        { suit: Suit.HEARTS, value: Value.ACE, isPlayable: false },
+        { suit: Suit.HEARTS, value: Value.KING, isPlayable: false },
+        { suit: Suit.CLUBS, value: Value.ACE, isPlayable: false },
+        { suit: Suit.DIAMONDS, value: Value.TWO, isPlayable: false },
+      ]
+      return
+    }
     // Listen for game updates
     this.gameService.onGameUpdate().subscribe(data => {
       console.log('Game update:', data);

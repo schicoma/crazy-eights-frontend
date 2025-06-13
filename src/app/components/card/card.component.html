@@ -1,12 +1,20 @@
-<div class="card" [class.face-down]="isFaceDown" [class.playable]="isPlayable" [class.clickable]="isClickable">
+<div class="card" [class.face-down]="isFaceDown" [class.playable]="isPlayable" [class.clickable]="isClickable"
+  role="img" [attr.aria-label]="isFaceDown ? 'Card face down' : value + ' of ' + suit">
   <div class="card-inner">
     <div class="card-front">
       <div class="card-value">{{value}}</div>
-      <div [class.card-suit-red]="suitColor === 'red'" [class.card-suit-black]="suitColor === 'black'">{{suitIcon}}
-      </div>
+      <div [class]="'card-suit-' + suitColor">{{suitIcon}}</div>
     </div>
     <div class="card-back">
-      <div class="card-pattern"></div>
+      <ng-container *ngTemplateOutlet="label ? labelTemplate : patternTemplate"></ng-container>
     </div>
   </div>
 </div>
+
+<ng-template #labelTemplate>
+  <span class="label">{{label}}</span>
+</ng-template>
+
+<ng-template #patternTemplate>
+  <div class="card-pattern"></div>
+</ng-template>

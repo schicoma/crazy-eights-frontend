@@ -11,6 +11,6 @@ import { Component, Input } from '@angular/core';
 export class PlayerInfoComponent {
   @Input() isOpponent: boolean = false;
   @Input() cardsCount: number = 0;
-  @Input() status: string = 'false'
+  @Input() status: string | undefined
 
 }
