@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Card, Suit, Value } from '../../models/card.model';
 import { GameState } from '../../models/gameState.model';
 import { DeckService } from '../../services/deck.service';
@@ -9,6 +9,7 @@ import { GameOptionsModalComponent } from '../game-options-modal/game-options-mo
 import { PlayerHandComponent } from '../player-hand/player-hand.component';
 import { PlayerInfoComponent } from '../player-info/player-info.component';
 import { SuitSelectorModalComponent } from '../suit-selector-modal/suit-selector-modal.component';
+import { GameOverModalComponent } from '../game-over-modal/game-over-modal.component';
 
 @Component({
   selector: 'app-game-board',
@@ -19,7 +20,8 @@ import { SuitSelectorModalComponent } from '../suit-selector-modal/suit-selector
     PlayerInfoComponent,
     CenterPileComponent,
     SuitSelectorModalComponent,
-    GameOptionsModalComponent
+    GameOptionsModalComponent,
+    GameOverModalComponent
   ],
   templateUrl: './game-board.component.html',
   styleUrls: ['./game-board.component.scss']
@@ -36,6 +38,8 @@ export class GameBoardComponent implements OnInit {
   public isLoading = false;
   public isMyTurn = false;
   public hasDrawnCard = false;
+  public showGameOver = false;
+  public isWinner = false;
 
   private cardPlayed: Card | null = null;
 
@@ -43,21 +47,21 @@ export class GameBoardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if (true) {
-      this.showGameOptions = false
-      this.topCard = { suit: Suit.CLUBS, value: Value.ACE, isPlayable: false }
-      this.opponentCardsCount = 8
-      this.playerHand = [
-        { suit: Suit.DIAMONDS, value: Value.ACE, isPlayable: false },
-        { suit: Suit.SPADES, value: Value.JACK, isPlayable: false },
-        { suit: Suit.CLUBS, value: Value.EIGHT, isPlayable: false },
-        { suit: Suit.HEARTS, value: Value.ACE, isPlayable: false },
-        { suit: Suit.HEARTS, value: Value.KING, isPlayable: false },
-        { suit: Suit.CLUBS, value: Value.ACE, isPlayable: false },
-        { suit: Suit.DIAMONDS, value: Value.TWO, isPlayable: false },
-      ]
-      return
-    }
+    // if (true) {
+    //   this.showGameOptions = false
+    //   this.topCard = { suit: Suit.CLUBS, value: Value.ACE, isPlayable: false }
+    //   this.opponentCardsCount = 8
+    //   this.playerHand = [
+    //     { suit: Suit.DIAMONDS, value: Value.ACE, isPlayable: false },
+    //     { suit: Suit.SPADES, value: Value.JACK, isPlayable: false },
+    //     { suit: Suit.CLUBS, value: Value.EIGHT, isPlayable: false },
+    //     { suit: Suit.HEARTS, value: Value.ACE, isPlayable: false },
+    //     { suit: Suit.HEARTS, value: Value.ACE, isPlayable: false },
+    //     { suit: Suit.HEARTS, value: Value.ACE, isPlayable: false },
+    //     { suit: Suit.HEARTS, value: Value.KING, isPlayable: false },
+    //   ]
+    //   return
+    // }
     // Listen for game updates
     this.gameService.onGameUpdate().subscribe(data => {
       console.log('Game update:', data);
@@ -94,7 +98,6 @@ export class GameBoardComponent implements OnInit {
       return
     }
 
-
     this.opponentCardsCount = gameState.opponentCardCount;
     this.playerHand = gameState.yourHand;
     this.topCard = gameState.topCard;
@@ -102,6 +105,11 @@ export class GameBoardComponent implements OnInit {
 
     if (type !== 'cardDrawn') {
       this.hasDrawnCard = false
+    }
+
+    if (gameState.status === 'finished') {
+      this.showGameOver = true
+      this.isWinner = this.playerHand.length === 0
     }
   }
 
@@ -184,5 +192,10 @@ export class GameBoardComponent implements OnInit {
     }).subscribe((data) => {
       this.updateGameState(data.gameState);
     });
+  }
+
+  onNewGame() {
+    this.showGameOver = false;
+    this.showGameOptions = true;
   }
 }

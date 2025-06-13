@@ -17,4 +17,5 @@ export interface GameState {
     topCard: Card
     yourHand: Card[]
     isMyTurn: boolean
+    status: 'finished' | 'playing' | 'waiting'
 }

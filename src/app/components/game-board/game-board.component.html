@@ -20,4 +20,6 @@
 
   <app-game-options-modal *ngIf="showGameOptions" [gameId]="currentGameId" [isLoading]="isLoading"
     (createGame)="onCreateGame()" (joinGame)="onJoinGame($event)"></app-game-options-modal>
+
+  <app-game-over-modal *ngIf="showGameOver" [isWinner]="isWinner" (close)="showGameOver = false"></app-game-over-modal>
 </div>

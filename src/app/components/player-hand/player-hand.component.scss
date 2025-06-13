@@ -21,6 +21,8 @@
   }
 
   &:not(.opponent) {
+    padding: 20px;
+
     ::ng-deep .card {
       width: 70px;
       height: 105px;
@@ -48,7 +50,13 @@
         }
       }
     }
-    
+
+    &:not(.opponent) {
+      ::ng-deep .card {
+        width: 120px;
+        height: 180px;
+      }
+    }
   }
 }
 
