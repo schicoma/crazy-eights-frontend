@@ -18,7 +18,7 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy the Angular build output to the Nginx html directory
 # Adjust 'dist/your-app-name' to your actual Angular output folder
-COPY --from=build /app/dist/crazy-eights /usr/share/nginx/html
+COPY --from=build /app/dist/crazy-eights/browser /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
