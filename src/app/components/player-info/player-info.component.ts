@@ -1,5 +1,5 @@
-import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-player-info',
@@ -10,8 +10,7 @@ import { CommonModule } from '@angular/common';
 })
 export class PlayerInfoComponent {
   @Input() isOpponent: boolean = false;
-  
-  // Temporary mock data for UI development
-  cardsCount: number = 4;
-  status: string = 'Thinking...';
+  @Input() cardsCount: number = 0;
+  @Input() status: string = 'false'
+
 }

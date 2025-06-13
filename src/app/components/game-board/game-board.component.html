@@ -1,15 +1,23 @@
 <div class="game-board">
   <div class="opponent-section">
-    <app-player-info [isOpponent]="true"></app-player-info>
-    <app-player-hand [isOpponent]="true" [cards]="computerHand"></app-player-hand>
+    <app-player-info [isOpponent]="true" [cardsCount]="opponentCardsCount"
+      [status]="!isMyTurn ? 'Thinking ...' : ''"></app-player-info>
+    <app-player-hand [isOpponent]="true" [opponentCardsCount]="opponentCardsCount"></app-player-hand>
   </div>
-  
+
   <div class="center-section">
-    <app-center-pile [cards]="centerPile" (drawCard)="drawCard()"></app-center-pile>
+    <app-center-pile [topCard]="topCard" (drawCard)="drawCard()"></app-center-pile>
   </div>
-  
+
   <div class="player-section">
-    <app-player-info [isOpponent]="false"></app-player-info>
-    <app-player-hand [isOpponent]="false" [cards]="playerHand"></app-player-hand>
+    <app-player-info [isOpponent]="false" [cardsCount]="playerHand.length"></app-player-info>
+    <app-player-hand [isOpponent]="false" [cards]="playerHand" [hasDrawnCard]="hasDrawnCard"
+      (playCard)="playCard($event)" (pass)="onPass()"></app-player-hand>
   </div>
+
+  <app-suit-selector-modal *ngIf="showSuitSelector" (suitSelected)="onSuitSelected($event)"
+    (close)="showSuitSelector = false"></app-suit-selector-modal>
+
+  <app-game-options-modal *ngIf="showGameOptions" [gameId]="currentGameId" [isLoading]="isLoading"
+    (createGame)="onCreateGame()" (joinGame)="onJoinGame($event)"></app-game-options-modal>
 </div>

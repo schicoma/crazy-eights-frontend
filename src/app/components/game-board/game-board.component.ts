@@ -1,10 +1,14 @@
-import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { Card, Suit, Value } from '../../models/card.model';
+import { GameState } from '../../models/gameState.model';
+import { DeckService } from '../../services/deck.service';
+import { GameService } from '../../services/game.service';
+import { CenterPileComponent } from '../center-pile/center-pile.component';
+import { GameOptionsModalComponent } from '../game-options-modal/game-options-modal.component';
 import { PlayerHandComponent } from '../player-hand/player-hand.component';
 import { PlayerInfoComponent } from '../player-info/player-info.component';
-import { CenterPileComponent } from '../center-pile/center-pile.component';
-import { DeckService } from '../../services/deck.service';
-import { Card } from '../../models/card.model';
+import { SuitSelectorModalComponent } from '../suit-selector-modal/suit-selector-modal.component';
 
 @Component({
   selector: 'app-game-board',
@@ -13,52 +17,156 @@ import { Card } from '../../models/card.model';
     CommonModule,
     PlayerHandComponent,
     PlayerInfoComponent,
-    CenterPileComponent
+    CenterPileComponent,
+    SuitSelectorModalComponent,
+    GameOptionsModalComponent
   ],
   templateUrl: './game-board.component.html',
   styleUrls: ['./game-board.component.scss']
 })
 export class GameBoardComponent implements OnInit {
-  private deck: Card[] = [];
+  public topCard: Card | null = null;
   public centerPile: Card[] = [];
   public playerHand: Card[] = [];
-  public computerHand: Card[] = [];
+  public opponentCardsCount: number = 0;
+  public showSuitSelector = false;
+  public suitSelected: Suit | null = null;
+  public showGameOptions = true;
+  public currentGameId: string | null = null;
+  public isLoading = false;
+  public isMyTurn = false;
+  public hasDrawnCard = false;
 
-  constructor(private deckService: DeckService) { }
+  private cardPlayed: Card | null = null;
+
+  constructor(private deckService: DeckService, private gameService: GameService) { }
 
   ngOnInit(): void {
-    this.startNewGame();
+    // Listen for game updates
+    this.gameService.onGameUpdate().subscribe(data => {
+      console.log('Game update:', data);
+
+      switch (data.type) {
+        case 'opponentJoined':
+          this.showGameOptions = false;
+          this.isLoading = false;
+          this.updateGameState(data.gameState, data.type);
+          break;
+
+        case 'cardPlayed':
+          this.updateGameState(data.gameState, data.type);
+          break;
+
+        case 'cardDrawn':
+          this.updateGameState(data.gameState, data.type);
+          break;
+
+        case 'pass':
+          this.updateGameState(data.gameState, data.type);
+          break;
+
+        case 'gameStarted':
+          this.updateGameState(data.gameState, data.type);
+          break;
+      }
+
+    });
   }
 
-  startNewGame(): void {
-    // Reset and shuffle the deck
-    this.deckService.resetDeck();
-    this.deck = this.deckService.getDeck();
+  private updateGameState(gameState: GameState, type?: string): void {
+    if (!gameState) {
+      return
+    }
 
-    console.log(this.deck);
 
-    // Deal initial cards (7 cards each for Crazy Eights)
-    this.playerHand = this.deck.splice(0, 7);
-    this.computerHand = this.deck.splice(0, 7);
+    this.opponentCardsCount = gameState.opponentCardCount;
+    this.playerHand = gameState.yourHand;
+    this.topCard = gameState.topCard;
+    this.isMyTurn = gameState.isMyTurn
 
-    // Place first card in center pile
-    this.centerPile = [this.deck.splice(0, 1)[0]];
+    if (type !== 'cardDrawn') {
+      this.hasDrawnCard = false
+    }
+  }
+
+  onCreateGame(): void {
+    this.isLoading = true;
+    this.gameService.createGame().subscribe(data => {
+      console.log('Game created:', data);
+      this.currentGameId = data.gameId;
+
+      // localStorage.setItem('crazyEightsGameId', data.gameId);
+      // localStorage.setItem('crazyEightsPlayerId', socket.id); // or a custom player token
+    });
+  }
+
+  onJoinGame(gameId: string): void {
+    this.isLoading = true;
+    this.gameService.joinGame(gameId).subscribe(data => {
+      this.currentGameId = gameId;
+      this.showGameOptions = false;
+      this.isLoading = false;
+      this.updateGameState(data.gameState);
+    });
   }
 
   drawCard() {
-    let cardDrawn = undefined
-    if (this.deck.length === 0) {
-      // If deck is empty, shuffle the center pile (except top card) back into the deck
-      // const topCard = this.centerPile.pop();
-      // if (topCard) {
-      //   this.deck = [...this.centerPile];
-      //   this.centerPile = [topCard];
-      //   this.deckService.shuffleDeck();
-      // }
+    if (!this.currentGameId || !this.isMyTurn) {
+      alert("Not your turn")
+      return;
     }
-    cardDrawn = this.deck.splice(0, 1)[0];
 
-    // add drawn card to the player's hand
-    this.playerHand.push(cardDrawn);
+    if (this.hasDrawnCard) {
+      alert("You can only draw one card in your turn")
+      return
+    }
+
+    this.hasDrawnCard = true
+    this.gameService.drawCard(this.currentGameId).subscribe((data) => {
+      this.updateGameState(data.gameState);
+    });
+  }
+
+  playCard(card: Card): void {
+    if (!this.currentGameId || !this.isMyTurn) {
+      alert("Not your turn")
+      return;
+    }
+
+    this.cardPlayed = card
+
+    // If an 8 was played, show the suit selector
+    if (card.value === Value.EIGHT) {
+      this.showSuitSelector = true;
+      return
+    }
+
+    this.gameService.playCard({ gameId: this.currentGameId, card }).subscribe((data) => {
+      this.updateGameState(data.gameState);
+    });
+  }
+
+  onPass(): void {
+    if (!this.currentGameId || !this.hasDrawnCard) {
+      return;
+    }
+
+    this.gameService.pass(this.currentGameId).subscribe((data) => {
+      console.log('Turn passed:', data);
+      this.updateGameState(data.gameState);
+      this.hasDrawnCard = false;
+    });
+  }
+
+  onSuitSelected(suit: Suit): void {
+    this.showSuitSelector = false;
+    this.suitSelected = suit;
+
+    this.gameService.playCard({
+      gameId: this.currentGameId, card: this.cardPlayed,
+      suiteChanged: suit
+    }).subscribe((data) => {
+      this.updateGameState(data.gameState);
+    });
   }
 }

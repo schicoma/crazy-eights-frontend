@@ -1,11 +1,11 @@
 <div class="player-hand" [class.opponent]="isOpponent">
+
+  <div class="actions" *ngIf="!isOpponent && hasDrawnCard">
+    <button role="button" class="pass-button" (click)="onPass()">Pass</button>
+  </div>
+
   <div class="cards-container">
-    <app-card
-      *ngFor="let card of cards"
-      [value]="card.value"
-      [suit]="card.suit"
-      [isFaceDown]="isOpponent"
-      [isPlayable]="card.isPlayable"
-    ></app-card>
+    <app-card *ngFor="let card of cards" [value]="card.value" [suit]="card.suit" [isFaceDown]="isOpponent"
+      [isPlayable]="card.isPlayable" (click)="selectCard(card)"></app-card>
   </div>
 </div>

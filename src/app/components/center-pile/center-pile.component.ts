@@ -11,14 +11,12 @@ import { Card } from '../../models/card.model';
   styleUrls: ['./center-pile.component.scss']
 })
 export class CenterPileComponent {
-  @Input() cards: Card[] = [];
+  @Input() topCard: Card | null = null;
+
   @Output() drawCard = new EventEmitter<void>();
 
-  get topCard(): Card | undefined {
-    return this.cards[this.cards.length - 1];
-  }
-
   onDrawPileClick(): void {
+    console.log('onDrawPileClick', this.topCard)
     this.drawCard.emit();
   }
 }

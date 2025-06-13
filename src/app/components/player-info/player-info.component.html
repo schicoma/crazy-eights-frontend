@@ -2,6 +2,6 @@
   <div class="player-name">{{ isOpponent ? 'Opponent' : 'You' }}</div>
   <div class="player-stats">
     <div class="cards-count">Cards: {{ cardsCount }}</div>
-    <div class="player-status" *ngIf="isOpponent">{{ status }}</div>
+    <div class="player-status" *ngIf="status">{{ status }}</div>
   </div>
 </div>
