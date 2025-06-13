@@ -28,4 +28,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+
+  .message {
+    display: block;
+    color: white;
+    margin: 1.2rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
 }

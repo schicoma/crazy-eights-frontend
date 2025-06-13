@@ -18,4 +18,5 @@ export interface GameState {
     yourHand: Card[]
     isMyTurn: boolean
     status: 'finished' | 'playing' | 'waiting'
+    currentDrawPenalty: number
 }

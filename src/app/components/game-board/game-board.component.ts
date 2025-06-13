@@ -40,6 +40,7 @@ export class GameBoardComponent implements OnInit {
   public hasDrawnCard = false;
   public showGameOver = false;
   public isWinner = false;
+  public currentDrawPenalty = 0;
 
   private cardPlayed: Card | null = null;
 
@@ -102,6 +103,7 @@ export class GameBoardComponent implements OnInit {
     this.playerHand = gameState.yourHand;
     this.topCard = gameState.topCard;
     this.isMyTurn = gameState.isMyTurn
+    this.currentDrawPenalty = gameState.currentDrawPenalty
 
     if (type !== 'cardDrawn') {
       this.hasDrawnCard = false

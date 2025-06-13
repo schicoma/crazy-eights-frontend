@@ -6,7 +6,8 @@
   </div>
 
   <div class="center-section">
-    <app-center-pile [topCard]="topCard" (drawCard)="drawCard()"></app-center-pile>
+    <span class="message" *ngIf="currentDrawPenalty">Current punishment: +{{currentDrawPenalty}}</span>
+    <app-center-pile [topCard]="topCard" (drawCard)="drawCard()" ></app-center-pile>
   </div>
 
   <div class="player-section">
