@@ -1,3 +1,4 @@
+import { CdkDragDrop, CdkDrag, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { Card } from '../../models/card.model';
@@ -8,9 +9,9 @@ const MAX_LIMIT_OPPONENT_CARDS_FOR_MOBILE = 7
 @Component({
   selector: 'app-player-hand',
   standalone: true,
-  imports: [CommonModule, CardComponent],
+  imports: [CommonModule, CardComponent, CdkDropList, CdkDrag],
   templateUrl: './player-hand.component.html',
-  styleUrls: ['./player-hand.component.scss']
+  styleUrls: ['./player-hand.component.scss'],
 })
 export class PlayerHandComponent implements OnChanges {
   @Input() isOpponent: boolean = false;
@@ -51,5 +52,9 @@ export class PlayerHandComponent implements OnChanges {
 
   onPass() {
     this.pass.emit();
+  }
+
+  drop(event: CdkDragDrop<Card[]>) {
+    moveItemInArray(this.cards, event.previousIndex, event.currentIndex);
   }
 }

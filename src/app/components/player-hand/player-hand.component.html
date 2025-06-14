@@ -4,9 +4,12 @@
     <button role="button" class="pass-button" (click)="onPass()">Pass</button>
   </div>
 
-  <div class="cards-container">
-    <app-card *ngFor="let card of cards" [value]="card.value" [suit]="card.suit" [isFaceDown]="isOpponent"
-      [isPlayable]="card.isPlayable" (click)="selectCard(card)"></app-card>
+  <div cdkDropList cdkDropListSortingDisabled cdkDropListOrientation="horizontal" class="cards-container"
+    (cdkDropListDropped)="drop($event)">
+    @for (card of cards; track card) {
+    <app-card cdkDrag [cdkDragDisabled]="isOpponent" [value]="card.value" [suit]="card.suit" [isFaceDown]="isOpponent" [isPlayable]="card.isPlayable"
+      (click)="selectCard(card)"></app-card>
+    }
     <app-card *ngIf="opponentCardsLabel" [isFaceDown]="isOpponent" [label]="opponentCardsLabel"></app-card>
   </div>
 </div>

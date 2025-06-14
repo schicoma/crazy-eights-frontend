@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Card, Suit, Value } from '../../models/card.model';
 import { GameState } from '../../models/gameState.model';
 import { DeckService } from '../../services/deck.service';
 import { GameService } from '../../services/game.service';
 import { CenterPileComponent } from '../center-pile/center-pile.component';
 import { GameOptionsModalComponent } from '../game-options-modal/game-options-modal.component';
+import { GameOverModalComponent } from '../game-over-modal/game-over-modal.component';
 import { PlayerHandComponent } from '../player-hand/player-hand.component';
 import { PlayerInfoComponent } from '../player-info/player-info.component';
 import { SuitSelectorModalComponent } from '../suit-selector-modal/suit-selector-modal.component';
-import { GameOverModalComponent } from '../game-over-modal/game-over-modal.component';
 
 @Component({
   selector: 'app-game-board',
