@@ -7,10 +7,13 @@
 
   <div class="center-section">
     <span class="message" *ngIf="currentDrawPenalty">Current punishment: +{{currentDrawPenalty}}</span>
-    <app-center-pile [topCard]="topCard" (drawCard)="drawCard()" ></app-center-pile>
+    <app-center-pile [topCard]="topCard" (drawCard)="drawCard()"></app-center-pile>
   </div>
 
   <div class="player-section">
+    <div class="notifications" *ngIf="notification">
+      <span>{{notification}}</span>
+    </div>
     <app-player-info [isOpponent]="false" [cardsCount]="playerHand.length"></app-player-info>
     <app-player-hand [isOpponent]="false" [cards]="playerHand" [hasDrawnCard]="hasDrawnCard"
       (playCard)="playCard($event)" (pass)="onPass()"></app-player-hand>

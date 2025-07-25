@@ -41,12 +41,21 @@ export class GameBoardComponent implements OnInit {
   public showGameOver = false;
   public isWinner = false;
   public currentDrawPenalty = 0;
+  public notification: string | null = null
 
   private cardPlayed: Card | null = null;
 
   constructor(private deckService: DeckService, private gameService: GameService) { }
 
   ngOnInit(): void {
+
+    this.gameService.onNotifications().subscribe(data => {
+      this.notification = data.message
+
+      setTimeout(() => {
+        this.notification = null
+      }, 10000)
+    })
 
     // if (true) {
     //   this.showGameOptions = false

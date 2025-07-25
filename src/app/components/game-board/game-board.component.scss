@@ -38,3 +38,12 @@
     font-weight: 700;
   }
 }
+
+.notifications {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #dedede;
+  border-radius: 16px;
+}

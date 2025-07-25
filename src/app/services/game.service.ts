@@ -62,4 +62,12 @@ export class GameService {
       });
     });
   }
+
+  onNotifications(): Observable<{ message: string }> {
+    return new Observable(observer => {
+      this.socket.on('notitifications', (data) => {
+        observer.next(data)
+      })
+    })
+  }
 }
